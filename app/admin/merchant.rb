@@ -1,7 +1,7 @@
 ActiveAdmin.register Merchant do
 
   permit_params :name, :description, :image, :published,
-    packages_attributes: [:id, :name, :image, :description, :original_price, :discounted_price, :published, :merchant_id, :_destroy]
+    packages_attributes: [:id, :name, :short_name, :image, :description, :original_price, :discounted_price, :published, :merchant_id, :_destroy]
 
   filter :name, as: :string
   filter :published, as: :boolean
@@ -30,6 +30,7 @@ ActiveAdmin.register Merchant do
     panel "Packages" do
       table_for merchant.packages do
         column :name
+        column :short_name
         column do |package|
           image_tag(package.image_thumbnail_url, size: "100x100")
         end
@@ -52,6 +53,7 @@ ActiveAdmin.register Merchant do
     f.inputs "Packages" do
       f.has_many :packages, allow_destroy: true do |a|
         a.input :name
+        a.input :short_name
         a.input :image, :as => :file, :hint => a.template.image_tag(a.object.image.url(:thumbnail))
         a.input :description
         a.input :original_price
